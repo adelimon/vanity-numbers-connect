@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  DynamoDBTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'CallerNumber'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'CallerNumber'
+          KeyType: 'HASH'
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: VanityNumbers
+  Function:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: 'ajd-vanity-numbers'
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Code:
+        ZipFile: true;
+      Role: !GetAtt
+        - LambdaExecutionRole
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - LambdaExecutionRole
+  LambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      Policies:
+        - PolicyName: LambdaPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+              - Action:
+                  - 'dynamodb:PutItem'
+                Resource: !GetAtt
+                  - DynamoDBTable
+                  - Arn
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com

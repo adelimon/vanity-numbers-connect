@@ -1,0 +1,13 @@
+{
+  "name": "vanity-numbers",
+  "version": "1.0.0",
+  "description": "Convert a telephone number to a vanity number.",
+  "main": "LOCAL_MODE='true' AWS_PROFILE='claudia' AWS_REGION='us-east-1' node localtest.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "LOCAL_MODE='true' AWS_PROFILE='claudia' AWS_REGION='us-east-1' node localtest.js"
+  },
+  "author": "adelimon",
+  "license": "MIT",
+  "dependencies": {}
+}
