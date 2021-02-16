@@ -31,9 +31,3 @@ let event = {
 };
 
 lambda.handler(event);
-
-/*
-let phoneNumber = event.Details.ContactData.CustomerEndpoint.Address;
-let vanityList = vanityNumbers.getVanityNumbers(phoneNumber,5);
-database.upsert(phoneNumber, vanityList);
-*/

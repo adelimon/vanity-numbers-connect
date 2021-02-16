@@ -4,10 +4,14 @@
   "description": "Convert a telephone number to a vanity number.",
   "main": "LOCAL_MODE='true' AWS_PROFILE='claudia' AWS_REGION='us-east-1' node localtest.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc mocha",
     "start": "LOCAL_MODE='true' AWS_PROFILE='claudia' AWS_REGION='us-east-1' node localtest.js"
   },
   "author": "adelimon",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "mocha": "^8.3.0",
+    "nyc": "^15.1.0",
+    "sinon": "^9.2.4"
+  }
 }
