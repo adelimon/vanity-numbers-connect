@@ -2,7 +2,7 @@
 profile=$1
 
 echo "deploying CloudFormation stack..."
-aws cloudformation create-stack $1 --stack-name ajdvoicefoundry --template-body file:///Users/adelimon/github/vanity-numbers-connect/deployment/dynamo-lambda.yaml --capabilities CAPABILITY_IAM
+aws cloudformation create-stack --profile $1 --stack-name voicefoundry-ajd1 --template-body file:///Users/adelimon/github/vanity-numbers-connect/deployment/dynamo-lambda.yaml --capabilities CAPABILITY_IAM
 
 echo "Waiting 2 minutes for stack completion before installing real Lambda code we just built..."
 count=0

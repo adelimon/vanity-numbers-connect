@@ -26,7 +26,7 @@ async function upsert(phoneNumber, vanityList) {
 		"LastUpdatedReadable": upsertDate.toUTCString(),
     }
     let params = {
-        TableName: 'VanityNumbers',
+        TableName: 'VanityNumber1',
         Item: saveObject,
     };
     try {

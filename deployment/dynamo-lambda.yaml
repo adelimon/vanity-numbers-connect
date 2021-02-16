@@ -12,11 +12,24 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-      TableName: VanityNumbers
+      TableName: VanityNumber1
+  ContactFlowTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: 'Version'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'Version'
+          KeyType: 'HASH'
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: ContactFlowJson1
   Function:
     Type: 'AWS::Lambda::Function'
     Properties:
-      FunctionName: 'ajd-vanity-numbers'
+      FunctionName: 'vanity-num-generator1'
       Handler: index.handler
       Runtime: nodejs12.x
       Code:
@@ -44,9 +57,8 @@ Resources:
                 Effect: Allow
               - Action:
                   - 'dynamodb:PutItem'
-                Resource: !GetAtt
-                  - DynamoDBTable
-                  - Arn
+                Resource:
+                  - '*'
                 Effect: Allow
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -57,3 +69,161 @@ Resources:
             Principal:
               Service:
                 - lambda.amazonaws.com
+  GenerateContactFlowFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: 'contact-flow-gen1'
+      Runtime: nodejs12.x
+      Role: !GetAtt
+        - LambdaExecutionRole
+        - Arn
+      Handler: index.handler
+      Code:
+        ZipFile: |
+          var aws = require('aws-sdk')
+          var response = require('cfn-response')
+          exports.handler = async function(event, context) {
+              console.log("REQUEST RECEIVED:\n" + JSON.stringify(event))
+
+              let lambdaArn =  event.ResourceProperties.VanityNumbersArn;
+              let responseData = {
+                "modules": [
+                  {
+                    "id": "4d36a741-bc87-4035-b3fa-9c8390e687ac",
+                    "type": "PlayPrompt",
+                    "branches": [
+                      {
+                        "condition": "Success",
+                        "transition": "7eefafd6-402f-4759-967c-b017ef5f3969"
+                      }
+                    ],
+                    "parameters": [
+                      {
+                        "name": "Text",
+                        "value": "Thanks for calling the AJD VoiceFoundry vanity number generation hotline!  \n\nNow we will use AWS Lambda to generate a few vanity numbers based on your incoming phone number.  These will preserve your area code, and use the rest of your phone number to generate mneumonics based on your number.  So you too can have a fun number for your friends!\n\nNow calling AWS Lambda to generate your numbers.",
+                        "namespace": null
+                      },
+                      {
+                        "name": "TextToSpeechType",
+                        "value": "text"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "7329da0c-3dcb-4661-a72e-95b6e841a4a4",
+                    "type": "PlayPrompt",
+                    "branches": [
+                      {
+                        "condition": "Success",
+                        "transition": "96f62f74-1905-40cd-acca-714c0782717a"
+                      }
+                    ],
+                    "parameters": [
+                      {
+                        "name": "Text",
+                        "value": "$.External.responseMessage",
+                        "namespace": null
+                      },
+                      {
+                        "name": "TextToSpeechType",
+                        "value": "text"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "96f62f74-1905-40cd-acca-714c0782717a",
+                    "type": "Disconnect",
+                    "branches": [],
+                    "parameters": []
+                  },
+                  {
+                    "id": "7eefafd6-402f-4759-967c-b017ef5f3969",
+                    "type": "InvokeExternalResource",
+                    "branches": [
+                      {
+                        "condition": "Success",
+                        "transition": "7329da0c-3dcb-4661-a72e-95b6e841a4a4"
+                      },
+                      {
+                        "condition": "Error",
+                        "transition": "431f29e2-cca7-44e4-a449-90a38c2d327b"
+                      }
+                    ],
+                    "parameters": [
+                      {
+                        "name": "FunctionArn",
+                        "value": lambdaArn,
+                        "namespace": null
+                      },
+                      {
+                        "name": "TimeLimit",
+                        "value": "8"
+                      }
+                    ],
+                    "target": "Lambda"
+                  },
+                  {
+                    "id": "431f29e2-cca7-44e4-a449-90a38c2d327b",
+                    "type": "PlayPrompt",
+                    "branches": [
+                      {
+                        "condition": "Success",
+                        "transition": "96f62f74-1905-40cd-acca-714c0782717a"
+                      }
+                    ],
+                    "parameters": [
+                      {
+                        "name": "Text",
+                        "value": "Sorry, we failed to find the state for your phone number's area code.",
+                        "namespace": null
+                      },
+                      {
+                        "name": "TextToSpeechType",
+                        "value": "text"
+                      }
+                    ]
+                  }
+                ],
+                "version": "1",
+                "type": "contactFlow",
+                "start": "4d36a741-bc87-4035-b3fa-9c8390e687ac"
+              }
+              let now = new Date();
+              const docClient = new aws.DynamoDB.DocumentClient();
+              let params = {
+                  TableName: 'ContactFlowJson1',
+                  Item: {
+                    Version: 'LATEST',
+                    InsertDate: now.toUTCString(),
+                    jsonContent: JSON.stringify(responseData),
+                  },
+              };
+              try {
+                  let data = await docClient.put(params).promise();
+                  console.log(JSON.stringify(data));
+              } catch (err) {
+                  console.error(JSON.stringify(err));
+              }
+
+              response.send(event, context, response.SUCCESS, responseData);
+          }
+      Description: Invoke a function during stack creation.
+      TracingConfig:
+        Mode: Active
+    DependsOn:
+      - LambdaExecutionRole
+      - ContactFlowTable
+      - DynamoDBTable
+  GenerateContactFlow:
+    Type: Custom::GenerateContactFlow
+    Properties:
+      ServiceToken:
+        !GetAtt
+        - GenerateContactFlowFunction
+        - Arn
+      VanityNumbersArn:
+        !GetAtt
+        - Function
+        - Arn
+    DependsOn:
+      - GenerateContactFlowFunction

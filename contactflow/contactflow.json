@@ -19,14 +19,7 @@
 					"name": "TextToSpeechType",
 					"value": "text"
 				}
-			],
-			"metadata": {
-				"position": {
-					"x": 169,
-					"y": 50
-				},
-				"useDynamic": false
-			}
+			]
 		},
 		{
 			"id": "7329da0c-3dcb-4661-a72e-95b6e841a4a4",
@@ -47,26 +40,13 @@
 					"name": "TextToSpeechType",
 					"value": "text"
 				}
-			],
-			"metadata": {
-				"position": {
-					"x": 710,
-					"y": 142
-				},
-				"useDynamic": false
-			}
+			]
 		},
 		{
 			"id": "96f62f74-1905-40cd-acca-714c0782717a",
 			"type": "Disconnect",
 			"branches": [],
-			"parameters": [],
-			"metadata": {
-				"position": {
-					"x": 1264,
-					"y": 371
-				}
-			}
+			"parameters": []
 		},
 		{
 			"id": "7eefafd6-402f-4759-967c-b017ef5f3969",
@@ -92,14 +72,6 @@
 					"value": "8"
 				}
 			],
-			"metadata": {
-				"position": {
-					"x": 126,
-					"y": 245
-				},
-				"dynamicMetadata": {},
-				"useDynamic": false
-			},
 			"target": "Lambda"
 		},
 		{
@@ -121,29 +93,10 @@
 					"name": "TextToSpeechType",
 					"value": "text"
 				}
-			],
-			"metadata": {
-				"position": {
-					"x": 903,
-					"y": 567
-				},
-				"useDynamic": false
-			}
+			]
 		}
 	],
 	"version": "1",
 	"type": "contactFlow",
-	"start": "4d36a741-bc87-4035-b3fa-9c8390e687ac",
-	"metadata": {
-		"entryPointPosition": {
-			"x": 15,
-			"y": 15
-		},
-		"snapToGrid": false,
-		"name": "voicefoundry_lambda_exercise",
-		"description": "Invokes a lambda function to determine information about the user.",
-		"type": "contactFlow",
-		"status": "published",
-		"hash": "a42749c7049cf411e37980d3eb3c8b8a545364775774a67835644a495bfa2e86"
-	}
+	"start": "4d36a741-bc87-4035-b3fa-9c8390e687ac"
 }

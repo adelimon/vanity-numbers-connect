@@ -8,7 +8,7 @@ exports.handler = async function(event, context) {
 	let vanityList = vanityNumbers.getVanityNumbers(phoneNumber,5);
     +15854140030
     let spokenNumber = phoneNumber.substring(2,5) + ' ' + phoneNumber.substring(5, 8) + ' ' + phoneNumber.substring(8, 12);
-    let spokenNumberMessage = `Your vanity numbers for ${spokenNumber} are ${vanityList.join(' ')}`;
+    let spokenNumberMessage = `Your vanity numbers for ${spokenNumber} are ${vanityList.join(', ')}`;
 
     let response = {
         statusCode: 200,
