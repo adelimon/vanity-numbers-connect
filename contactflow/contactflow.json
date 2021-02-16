@@ -1,25 +1,44 @@
 {
 	"modules": [
 		{
-			"id": "4d36a741-bc87-4035-b3fa-9c8390e687ac",
+			"id": "431f29e2-cca7-44e4-a449-90a38c2d327b",
 			"type": "PlayPrompt",
 			"branches": [
 				{
 					"condition": "Success",
-					"transition": "7eefafd6-402f-4759-967c-b017ef5f3969"
+					"transition": "96f62f74-1905-40cd-acca-714c0782717a"
 				}
 			],
 			"parameters": [
 				{
 					"name": "Text",
-					"value": "Thanks for calling the AJD VoiceFoundry vanity number generation hotline!  \n\nNow we will use AWS Lambda to generate a few vanity numbers based on your incoming phone number.  These will preserve your area code, and use the rest of your phone number to generate mneumonics based on your number.  So you too can have a fun number for your friends!\n\nNow calling AWS Lambda to generate your numbers.",
+					"value": "Sorry, we failed to create vanity numbers for your number. Please try again.",
 					"namespace": null
 				},
 				{
 					"name": "TextToSpeechType",
 					"value": "text"
 				}
-			]
+			],
+			"metadata": {
+				"position": {
+					"x": 572,
+					"y": 278
+				},
+				"useDynamic": false
+			}
+		},
+		{
+			"id": "96f62f74-1905-40cd-acca-714c0782717a",
+			"type": "Disconnect",
+			"branches": [],
+			"parameters": [],
+			"metadata": {
+				"position": {
+					"x": 874,
+					"y": 227
+				}
+			}
 		},
 		{
 			"id": "7329da0c-3dcb-4661-a72e-95b6e841a4a4",
@@ -33,20 +52,21 @@
 			"parameters": [
 				{
 					"name": "Text",
-					"value": "$.External.responseMessage",
+					"value": "$.External.responseMessage\n\nRepeating, your vanity numbers are:\n$.External.responseMessage",
 					"namespace": null
 				},
 				{
 					"name": "TextToSpeechType",
 					"value": "text"
 				}
-			]
-		},
-		{
-			"id": "96f62f74-1905-40cd-acca-714c0782717a",
-			"type": "Disconnect",
-			"branches": [],
-			"parameters": []
+			],
+			"metadata": {
+				"position": {
+					"x": 560,
+					"y": 118
+				},
+				"useDynamic": false
+			}
 		},
 		{
 			"id": "7eefafd6-402f-4759-967c-b017ef5f3969",
@@ -64,7 +84,7 @@
 			"parameters": [
 				{
 					"name": "FunctionArn",
-					"value": "arn:aws:lambda:us-east-1:425610073499:function:ajd-vanity-numbers",
+					"value": lambdaArn,
 					"namespace": null
 				},
 				{
@@ -72,31 +92,58 @@
 					"value": "8"
 				}
 			],
+			"metadata": {
+				"position": {
+					"x": 288,
+					"y": 162
+				},
+				"dynamicMetadata": {},
+				"useDynamic": false
+			},
 			"target": "Lambda"
 		},
 		{
-			"id": "431f29e2-cca7-44e4-a449-90a38c2d327b",
+			"id": "4d36a741-bc87-4035-b3fa-9c8390e687ac",
 			"type": "PlayPrompt",
 			"branches": [
 				{
 					"condition": "Success",
-					"transition": "96f62f74-1905-40cd-acca-714c0782717a"
+					"transition": "7eefafd6-402f-4759-967c-b017ef5f3969"
 				}
 			],
 			"parameters": [
 				{
 					"name": "Text",
-					"value": "Sorry, we failed to find the state for your phone number's area code.",
+					"value": "Thanks for calling the AJD VoiceFoundry vanity number generation hotline!  \n\nNow we will use AWS Lambda to generate a few vanity numbers based on your incoming phone number.  These will preserve your area code, and use the rest of your phone number to generate mneumonics based on your number. \n\nNow calling AWS Lambda to generate your numbers.",
 					"namespace": null
 				},
 				{
 					"name": "TextToSpeechType",
 					"value": "text"
 				}
-			]
+			],
+			"metadata": {
+				"position": {
+					"x": 44,
+					"y": 168
+				},
+				"useDynamic": false
+			}
 		}
 	],
 	"version": "1",
 	"type": "contactFlow",
-	"start": "4d36a741-bc87-4035-b3fa-9c8390e687ac"
+	"start": "4d36a741-bc87-4035-b3fa-9c8390e687ac",
+	"metadata": {
+		"entryPointPosition": {
+			"x": 15,
+			"y": 15
+		},
+		"snapToGrid": false,
+		"name": "new1",
+		"description": "Invokes a lambda function to determine information about the user.",
+		"type": "contactFlow",
+		"status": "saved",
+		"hash": "3b33c048f17897c0b18c990bc5bb703479c5c3456846127116d7088b7b1941a3"
+	}
 }
