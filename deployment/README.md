@@ -31,6 +31,7 @@ To complete the project install, follow these steps. Unfortunately there wasn't 
 * Under the AWS Lambda heading, choose the `vanity-num-generator` function, and click `+ Add Lambda Function`.  This will allow the function to be used from your Connect instance.
 * Now, log into your Connect instance.
 * Go to the `/connect/contact-flows` sub page, and choose Create Contact Flow. From the Save dropdown, click the arrow and choose `Import flow`.
+* When the contact flow `vanity-numbers-flow` is loaded, save it, then hit the Publish button.
 * Now, go to the `/connect/numbers` subpage.  Choose a phone number by clicking on it.
-* Choose the contact flow you just imported, and hit Save.
+* Choose the contact flow you just imported, `vanity-numbers-flow`, and hit Save.
 * You can now dial to this number, and it will work with the Lambda!

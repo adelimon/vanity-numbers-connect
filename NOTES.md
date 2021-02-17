@@ -29,8 +29,7 @@ I left this up and running for you to try if you'd like.
 
 ## Shortcuts I took
 In general I didn't take too many. What I did do I find to be reasonable and explain them below.
-
-* The two Lambda functions share a role. They should probably have their own.  Although you could make the case that functions that perform similar things should have similar roles.
+* Cloudformation resources could go in seperate files.  I kept them all in one since there are only a few and they are relatively simple.
 * Custom resource code is inlined the Lambda's CF definition.  This COULD be its own file.  But ultimately it has to be bootstrapped SOMEHOW so I did it this way.
 * The same applies to the contact flow JSON.
   * Ultimately, it has to be bootstrapped somewhere.  So it is inlined in the Lambda.

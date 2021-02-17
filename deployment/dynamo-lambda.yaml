@@ -57,7 +57,10 @@ Resources:
                 Effect: Allow
               - Action:
                   - 'dynamodb:PutItem'
-                Resource: '*'
+                Resource:
+                  !GetAtt
+                    - VanityNumbersTable
+                    - Arn
                 Effect: Allow
       AssumeRolePolicyDocument:
         Version: 2012-10-17
@@ -68,13 +71,45 @@ Resources:
             Principal:
               Service:
                 - lambda.amazonaws.com
+  CustomResourceLambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      Policies:
+        - PolicyName: LambdaPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+              - Action:
+                  - 'dynamodb:PutItem'
+                Resource:
+                  !GetAtt
+                    - ContactFlowTable
+                    - Arn
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+
   GenerateContactFlowFunction:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: 'contact-flow-gen'
       Runtime: nodejs12.x
       Role: !GetAtt
-        - LambdaExecutionRole
+        - CustomResourceLambdaExecutionRole
         - Arn
       Handler: index.handler
       Code:
@@ -86,7 +121,7 @@ Resources:
               let responseData = {};
               let lambdaArn =  event.ResourceProperties.VanityNumbersArn;
               responseData.lambdaArn = lambdaArn;
-              responseData.contactFlowJson = {"modules":[{"id":"431f29e2-cca7-44e4-a449-90a38c2d327b","type":"PlayPrompt","branches":[{"condition":"Success","transition":"96f62f74-1905-40cd-acca-714c0782717a"}],"parameters":[{"name":"Text","value":"Sorry, we failed to create vanity numbers for your number. Please try again.","namespace":null},{"name":"TextToSpeechType","value":"text"}],"metadata":{"position":{"x":572,"y":278},"useDynamic":false}},{"id":"96f62f74-1905-40cd-acca-714c0782717a","type":"Disconnect","branches":[],"parameters":[],"metadata":{"position":{"x":874,"y":227}}},{"id":"7329da0c-3dcb-4661-a72e-95b6e841a4a4","type":"PlayPrompt","branches":[{"condition":"Success","transition":"96f62f74-1905-40cd-acca-714c0782717a"}],"parameters":[{"name":"Text","value":"$.External.responseMessage\n\nRepeating, your vanity numbers are:\n$.External.responseMessage","namespace":null},{"name":"TextToSpeechType","value":"text"}],"metadata":{"position":{"x":560,"y":118},"useDynamic":false}},{"id":"7eefafd6-402f-4759-967c-b017ef5f3969","type":"InvokeExternalResource","branches":[{"condition":"Success","transition":"7329da0c-3dcb-4661-a72e-95b6e841a4a4"},{"condition":"Error","transition":"431f29e2-cca7-44e4-a449-90a38c2d327b"}],"parameters":[{"name":"FunctionArn","value":lambdaArn,"namespace":null},{"name":"TimeLimit","value":"8"}],"metadata":{"position":{"x":288,"y":162},"dynamicMetadata":{},"useDynamic":false},"target":"Lambda"},{"id":"4d36a741-bc87-4035-b3fa-9c8390e687ac","type":"PlayPrompt","branches":[{"condition":"Success","transition":"7eefafd6-402f-4759-967c-b017ef5f3969"}],"parameters":[{"name":"Text","value":"Thanks for calling the AJD VoiceFoundry vanity number generation hotline!  \n\nNow we will use AWS Lambda to generate a few vanity numbers based on your incoming phone number.  These will preserve your area code, and use the rest of your phone number to generate mneumonics based on your number. \n\nNow calling AWS Lambda to generate your numbers.","namespace":null},{"name":"TextToSpeechType","value":"text"}],"metadata":{"position":{"x":44,"y":168},"useDynamic":false}}],"version":"1","type":"contactFlow","start":"4d36a741-bc87-4035-b3fa-9c8390e687ac","metadata":{"entryPointPosition":{"x":15,"y":15},"snapToGrid":false,"name":"new1","description":"Invokes a lambda function to determine information about the user.","type":"contactFlow","status":"saved","hash":"3b33c048f17897c0b18c990bc5bb703479c5c3456846127116d7088b7b1941a3"}}
+              responseData.contactFlowJson = {"modules":[{"id":"431f29e2-cca7-44e4-a449-90a38c2d327b","type":"PlayPrompt","branches":[{"condition":"Success","transition":"96f62f74-1905-40cd-acca-714c0782717a"}],"parameters":[{"name":"Text","value":"Sorry, we failed to create vanity numbers for your number. Please try again.","namespace":null},{"name":"TextToSpeechType","value":"text"}],"metadata":{"position":{"x":572,"y":278},"useDynamic":false}},{"id":"96f62f74-1905-40cd-acca-714c0782717a","type":"Disconnect","branches":[],"parameters":[],"metadata":{"position":{"x":874,"y":227}}},{"id":"7329da0c-3dcb-4661-a72e-95b6e841a4a4","type":"PlayPrompt","branches":[{"condition":"Success","transition":"96f62f74-1905-40cd-acca-714c0782717a"}],"parameters":[{"name":"Text","value":"$.External.responseMessage\n\nRepeating, your vanity numbers are:\n$.External.responseMessage","namespace":null},{"name":"TextToSpeechType","value":"text"}],"metadata":{"position":{"x":560,"y":118},"useDynamic":false}},{"id":"7eefafd6-402f-4759-967c-b017ef5f3969","type":"InvokeExternalResource","branches":[{"condition":"Success","transition":"7329da0c-3dcb-4661-a72e-95b6e841a4a4"},{"condition":"Error","transition":"431f29e2-cca7-44e4-a449-90a38c2d327b"}],"parameters":[{"name":"FunctionArn","value":lambdaArn,"namespace":null},{"name":"TimeLimit","value":"8"}],"metadata":{"position":{"x":288,"y":162},"dynamicMetadata":{},"useDynamic":false},"target":"Lambda"},{"id":"4d36a741-bc87-4035-b3fa-9c8390e687ac","type":"PlayPrompt","branches":[{"condition":"Success","transition":"7eefafd6-402f-4759-967c-b017ef5f3969"}],"parameters":[{"name":"Text","value":"Thanks for calling the AJD VoiceFoundry vanity number generation hotline!  \n\nNow we will use AWS Lambda to generate a few vanity numbers based on your incoming phone number.  These will preserve your area code, and use the rest of your phone number to generate mneumonics based on your number. \n\nNow calling AWS Lambda to generate your numbers.","namespace":null},{"name":"TextToSpeechType","value":"text"}],"metadata":{"position":{"x":44,"y":168},"useDynamic":false}}],"version":"1","type":"contactFlow","start":"4d36a741-bc87-4035-b3fa-9c8390e687ac","metadata":{"entryPointPosition":{"x":15,"y":15},"snapToGrid":false,"name":"vanity-numbers-flow","description":"Invokes a lambda function to determine information about the user.","type":"contactFlow","status":"saved","hash":"3b33c048f17897c0b18c990bc5bb703479c5c3456846127116d7088b7b1941a3"}}
               const docClient = new aws.DynamoDB.DocumentClient();
               let saveObject = {
                 'Version': 'Latest',

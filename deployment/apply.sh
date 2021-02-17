@@ -17,3 +17,4 @@ echo "Updating Lambda function with real code..."
 ./apply-lambda.sh "$@"
 
 echo "Generating contact flow file"
+./getcontactflow.sh "$@"
