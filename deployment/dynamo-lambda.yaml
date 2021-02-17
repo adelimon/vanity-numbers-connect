@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Resources:
-  DynamoDBTable:
+  VanityNumbersTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
       AttributeDefinitions:
@@ -26,7 +26,7 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       TableName: ContactFlow
-  Function:
+  VanityNumberFunction:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: 'vanity-num-generator'
@@ -79,8 +79,8 @@ Resources:
       Handler: index.handler
       Code:
         ZipFile: |
-          var aws = require('aws-sdk')
-          var response = require('cfn-response')
+          let aws = require('aws-sdk');
+          let response = require('cfn-response');
           exports.handler = function(event, context) {
               console.log("REQUEST RECEIVED:\n" + JSON.stringify(event))
               let responseData = {};
@@ -120,7 +120,7 @@ Resources:
         - Arn
       VanityNumbersArn:
         !GetAtt
-        - Function
+        - VanityNumberFunction
         - Arn
     DependsOn:
       - GenerateContactFlowFunction

@@ -13,6 +13,7 @@ I left this up and running for you to try if you'd like.
 * I tried to minimize external dependencies. Again this was a personal preference for simplicity.  Generally speaking I would research up front if there were any external dependences that would make sense for a project like this.  Things like making the project easier to develop or solving already solved problems.
 * I have the Lambda being invoked directly from the Contact Flow.  There are probably other implementations of this (like making the Vanity Number generator an API endpoint). But this one is a good MVP given the requirements.
 * The code assumes a US or Canada based phone number, and English language.  Translation and global number handling would be possible on a real project if the requirements called for it (they don't always).
+* I used a `master` branch on a new Github project for this.  Normally I would not do that and would use a feature branch. But this a new and relatively simple project.
 
 ## Infrastructure
 * As a Terraform user in my current job, I had to learn CloudFormation for this project.  I chose that instead of CDK for speed for implmentation, since CF is the more mature, well used tool.
@@ -28,3 +29,4 @@ I left this up and running for you to try if you'd like.
 ## "Tricky" parts
 * Creating the custom resource and figuring out what to do with it was the hardest part for me.  I tried a few things and resisted the urge to do a simple search and replace as the exercise asked for a custom resource. :)  But putting it in Dynamo made sense to me.  I could have also used S3 for that.  I tried, but was getting some odd behavior that I couldn't quite get my finger on and I was running short on time.
 * I'm not as familar with YAML as I thought I was.
+* Apparently, the `async`/`await` constructs do not work very well in custom resource creation when you are using `cfn-response`.   So I didn't use it in my custom resource creation Lambda.  I abandonded it after spending far too much time on it. In this case it was fine since it is really just syntactic sugar in such a small function.  But I'm a Java/C# trained engineer, and I like my `try/catch` blocks. :)
