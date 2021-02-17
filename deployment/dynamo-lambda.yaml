@@ -38,6 +38,7 @@ Resources:
         - LambdaExecutionRole
         - Arn
       Timeout: '30'
+      Description: Invoke a function that will generate 5 vanity numbers to DynamoDB and put three in a message that a connect flow will speak to a caller.
     DependsOn:
       - LambdaExecutionRole
   LambdaExecutionRole:
@@ -140,7 +141,7 @@ Resources:
               });
               response.send(event, context, 'SUCCESS', responseData);
           }
-      Description: Invoke a function during stack creation.
+      Description: Invoke a function during stack creation that generates an Amazon Connect contact flow.
       TracingConfig:
         Mode: Active
     DependsOn:

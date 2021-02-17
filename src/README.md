@@ -17,7 +17,7 @@ The deployment makes the following assumptions:
 * You have NodeJS 10 or greater instaled. I developed using 12.6.0 but this was just what I had installed to begin with.
 
 ## Running Javascript package locally
-This package can be run locally, via `npm start`.  You will need a couple of env vars to do that:
+This package can be run locally, via `npm start`.  You will need a couple of env vars to do that.  package.json assumes you have these.  You can change them as needed in the `start` section:
 ```
 LOCAL_MODE=true
 AWS_REGION=us-east-1

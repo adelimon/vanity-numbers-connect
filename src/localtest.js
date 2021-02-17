@@ -7,7 +7,7 @@ let event = {
             "Channel": "VOICE",
             "ContactId": "4a573372-1f28-4e26-b97b-XXXXXXXXXXX",
             "CustomerEndpoint": {
-                "Address": "+15857460477",
+                "Address": "+12013987987",
                 "Type": "TELEPHONE_NUMBER"
             },
             "InitialContactId": "4a573372-1f28-4e26-b97b-XXXXXXXXXXX",

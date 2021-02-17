@@ -34,6 +34,7 @@ In general I didn't take too many. What I did do I find to be reasonable and exp
 * The same applies to the contact flow JSON.
   * Ultimately, it has to be bootstrapped somewhere.  So it is inlined in the Lambda.
   * An S3 bucket might have been a better choice for this.  If this were my product, I would probably write a user story to have someone do that in the future.  But as an MVP solution, it works for now.
+* Ultimately something like this Cloudformation YAML should probably output the resource ARNs and other items related to the stack for debugging.  I would add that as a future user story too.  I am not familar with this syntax in Cloudformation but would learn it for a task like that.
 ## With more time I would have....
 * Implemented the web application portion.  There are some really cool things you can do with Amplify that I have been looking for an excuse to play with.
 * In a real world scenario I would have spent some time making phone number mneumonics into actual words.  Maybe using a dictionary library or API.  However for this exercise, I chose to keep it simple and just use basic mneumonics.

@@ -7,13 +7,13 @@ The deployment makes the following assumptions:
   * bash
   * AWS CLI
   * [jq](https://stedolan.github.io/jq/)
-* You have an AWS account with permissions to create IAM roles, DynamoDB tables, and Lambda functions.
+* You have an AWS account with permissions to create Cloudformation stacks, create IAM roles, DynamoDB tables, and Lambda functions.
 # Deploying
-In order to deploy to your AWS account, run the `apply.sh` script while in the `deployment` directory.
+In order to deploy to your AWS account, run the `apply.sh` script while in the `deployment` directory.  The script references other scripts so staying in the same directory is needed.
 
 This will run the CloudFormation scripts and create a new stack in your account called `voicefoundry-ajd`.
 
-You can run this using standard AWS access methods (access key and secret), or a profile.  To run the with a profile provide the `--profile` switch, as in the command below `./apply.sh --profile myprofile`.
+You can run this using standard AWS access methods (access key and secret), or a profile.  To run the with a profile provide the `--profile` switch, as in the command below `./apply.sh --profile myprofile`.  This is how I ran the scripts as I have access to a few AWS accounts.
 
 The `apply.sh` script executes the following steps:
 * Create the `voicefoundry-ajd` stack, with the following resources: two DynamoDB tables, one Lambda, one custom resource Lambda, and one IAM role that is used by both Lambdas.  Note that the Lambda created by the CloudFormation YAML is a placeholder.
