@@ -1,4 +1,13 @@
 # vanity-numbers-connect Deployment
+
+# Pre-requisites
+The deployment makes the following assumptions:
+* You're running in a Linux or Linux-like environment.  This was built on a Mac but the instructions are the same for Linux or Windows Subsystem for Linux.
+* The environment has the following tools installed:
+  * bash
+  * AWS CLI
+  * [jq](https://stedolan.github.io/jq/)
+* You have an AWS account with permissions to create IAM roles, DynamoDB tables, and Lambda functions.
 # Deploying
 In order to deploy to your AWS account, run the `apply.sh` script while in the `deployment` directory.
 

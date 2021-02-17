@@ -12,6 +12,10 @@ Since the area code is preserved (for ease of remembering the number), the algor
 
 The 5 that are chosen are among the "best" choices as they are mneumonic.
 
+## Pre-requisites
+The deployment makes the following assumptions:
+* You have NodeJS 10 or greater instaled. I developed using 12.6.0 but this was just what I had installed to begin with.
+
 ## Running Javascript package locally
 This package can be run locally, via `npm start`.  You will need a couple of env vars to do that:
 ```
