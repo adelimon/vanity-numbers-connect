@@ -3,6 +3,8 @@
 # About
 This project generates a vanity number (easy to remember) number for your phone number when you call into an connected Amazon Connect instance.
 
+This solution works and can take an incoming call at 307-459-6535.
+
 ## Code
 For all the information about the code of this project, please see `src/README.md`.
 
